@@ -35,7 +35,7 @@ https://www.adafruit.com/product/2278
 ### Power Supply
 Need a power supply for both the RaspberryPi and the LED display.
 
-LED Display
+LED Display Power Supply
 
 ~$20
 
@@ -44,12 +44,13 @@ https://alitove.com/products/alitove-5v-10a-power-supply?_pos=1&_sid=402657fa8&_
 <br>
 
 
-RaspberryPi
+RaspberryPi Power Supply
 
 ~$10
 
 https://www.microcenter.com/product/608170/raspberry-pi-4-official-15w-power-supply-us-black
 
+<br>
 
 ### SD Card?
 Sandisk 32GB SD Card
