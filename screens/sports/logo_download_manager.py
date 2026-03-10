@@ -1,7 +1,11 @@
 import os
 import requests
 import json
+from PIL import Image
+from io import BytesIO
 
+#Used to get the correct API request URL depending on sport / league
+#param sport: A string parameter that represents the sport / league that we want to generate logos for
 def get_api_req(sport):
     url = ""
     if(sport == "cbb"):
@@ -19,11 +23,70 @@ def get_api_req(sport):
 
 
 def download_logos(sport):
-    url = get_api_req(sport)
+    #Gets url based on sport using get_api_req helper method
+    base_url = get_api_req(sport)
 
-    req = requests.get(url).json()
+    #represents the json data for the sport / league's teams. Formatted in pages.
+    #To access other pages must use the query "?page={pageNum}"
+
+    req = requests.get(base_url).json()
+    #Arr of dictionaries holding team references
     teams = req["items"]
-    for team in teams:
-        print(team)
+    page_count = 1
+    team_count = 1
+    
+    while(teams != []):
+        url = base_url
+        print(f"Page {page_count} / {req["pageCount"]}")
+        for pair in teams:
+            team_api_url = pair['$ref']
 
-download_logos("cbb")
+
+            #Because the dictionaries hold references to actual team JSON data, 
+            #we must use that reference api_url to request from the api
+            team_req_json = requests.get(team_api_url).json()
+            team_name = team_req_json["slug"]
+            file_name = team_name + "-logo.png"
+            if(os.path.exists(f"../../assets/{sport}/{file_name}")):
+                print(f"[{team_count}] {team_name} already has a file saved!")
+                team_count += 1
+                continue
+                
+            try:
+                
+                #Accesses the "default" team logo from logos dict
+                logo_json = team_req_json["logos"]
+                default_logo = logo_json[0]
+                default_logo_href = default_logo['href']
+                
+                print(f"[{team_count}] Saving {file_name}...")
+
+                logo_request = requests.get(default_logo_href)
+
+                print(f"[{team_count}] Resizing...")
+                img = Image.open(BytesIO(logo_request.content))
+                img = img.resize((24,24))
+                img.save(f"../../assets/{sport}/{file_name}")
+
+                print(f"[{team_count}] Successfully saved!")
+
+
+            #Handles teams that don't have a logo?
+            except KeyError:
+                print(f"[{team_count}] {team_name} doesn't have logo")
+            
+            finally:
+                team_count += 1
+
+        #Increments counter and handles url api for next page request
+        page_count += 1
+        url += f"?page={page_count}"
+        print(url)
+        req = requests.get(url).json()
+        teams = req["items"]
+        
+        
+
+# download_logos("cbb")
+download_logos("nhl")
+download_logos("cfb")
