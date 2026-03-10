@@ -87,6 +87,3 @@ def download_logos(sport):
         
         
 
-# download_logos("cbb")
-download_logos("nhl")
-download_logos("cfb")
