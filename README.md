@@ -78,3 +78,8 @@ Bonnet
 
 https://www.adafruit.com/product/3211
 
+
+<br>
+
+## API / Library Documentation:
+https://github.com/pseudo-r/Public-ESPN-API?tab=readme-ov-file
