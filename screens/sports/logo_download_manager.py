@@ -21,7 +21,15 @@ def get_api_req(sport):
     return url
 
 
-
+#Uses the ESPN API to download logos for the specific {sport} input league.
+#The sport parameter just specifies the league that we will be downloading the images from
+#Overall order of functionality is as follows:
+#1. Use the overall sport api url that gathers all teams from that league
+#2. Because the teams are set up as: multiple pages containing ~25 api url references to the actual team information
+#3. We must iterate while there are still pages to view
+#4. Within this iteration, we want to check every single team on that specific page.
+#5. We find the logo (if the team has one) and resize the image
+#6. The image is saved into "assets/{sport}/" filepath.
 def download_logos(sport):
     #Gets url based on sport using get_api_req helper method
     base_url = get_api_req(sport)
@@ -39,6 +47,7 @@ def download_logos(sport):
         url = base_url
         print(f"Page {page_count} / {req["pageCount"]}")
         for pair in teams:
+            #All teams are mapped to '$ref'
             team_api_url = pair['$ref']
 
 
@@ -61,8 +70,10 @@ def download_logos(sport):
                 
                 print(f"[{team_count}] Saving {file_name}...")
 
+                #Uses the req library to request the reference to the default logo image 
                 logo_request = requests.get(default_logo_href)
 
+                #Resizes image using PIL library
                 print(f"[{team_count}] Resizing...")
                 img = Image.open(BytesIO(logo_request.content))
                 img = img.resize((24,24))
@@ -86,4 +97,3 @@ def download_logos(sport):
         teams = req["items"]
         
         
-
