@@ -82,4 +82,10 @@ https://www.adafruit.com/product/3211
 <br>
 
 ## API / Library Documentation:
+Sports API:
 https://github.com/pseudo-r/Public-ESPN-API?tab=readme-ov-file
+
+<br>
+
+Weather API:
+https://openweathermap.org/api

@@ -34,5 +34,5 @@ def display_time():
     pass
 
 
-print(get_current_time())
-print(get_current_date())
+# print(get_current_time())
+# print(get_current_date())

@@ -1,1 +1,5 @@
 .env
+
+screens/poker/raw_poker_data.json
+screens/poker/poker_summary.json
+screens/poker/poker_summary_test.json
