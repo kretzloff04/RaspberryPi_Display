@@ -36,8 +36,8 @@ def download_logos(sport):
 
     #represents the json data for the sport / league's teams. Formatted in pages.
     #To access other pages must use the query "?page={pageNum}"
-
     req = requests.get(base_url).json()
+    
     #Arr of dictionaries holding team references
     teams = req["items"]
     page_count = 1
@@ -97,3 +97,4 @@ def download_logos(sport):
         teams = req["items"]
         
         
+download_logos("cfb")
