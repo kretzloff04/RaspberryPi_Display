@@ -143,6 +143,7 @@ def get_hourly_weather(city):
     
     return weather_arr
         
-
-
+weather_arr = get_hourly_weather("MSP")
+for i in range(len(weather_arr)):
+    print(weather_arr[i])
 
