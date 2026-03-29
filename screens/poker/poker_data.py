@@ -1,12 +1,13 @@
 import json
 
 class Summary:
-    def __init__(self, hours, total_in, total_out, stakes, sessions):
+    def __init__(self, hours, total_in, total_out, stakes, sessions, profit_per_session):
         self.hours = hours
         self.total_in = total_in
         self.total_out = total_out
         self.stakes = stakes
         self.sessions = sessions
+        self.profit_per_session = profit_per_session
         
         self.profit = (total_out - total_in)
         
@@ -42,6 +43,7 @@ class Summary:
         string += f"bb/hr: {self.bb_hour}\n"
         string += f"$/hr: {self.dollar_hour}\n"
         string += f"ROI: {self.roi}\n"
+        string += f"Profit/Session: {self.profit_per_session}\n"
         string += "_______________________"
 
         return string
@@ -100,6 +102,7 @@ def write_overall_summary_json(raw_json_data):
     overall_summary_data["$/hr"] = summary.dollar_hour
     overall_summary_data["ROI"] = summary.roi
     overall_summary_data["sessions"] = summary.sessions
+    overall_summary_data["profit_per_session"] = summary.profit_per_session
     
     print(f"Writing Back to {file_path}")
     file_writer = open(file_path, 'w')
@@ -146,6 +149,7 @@ def write_all_stakes_summary(raw_json_data):
         stake_summary["$/hr"] = summary_obj.dollar_hour
         stake_summary["ROI"] = summary_obj.roi
         stake_summary["sessions"] = summary_obj.sessions
+        stake_summary["profit_per_session"] = summary_obj.profit_per_session
 
         #writes entire json object back to file
     
@@ -171,6 +175,8 @@ def create_summary_by_stakes(stakes, raw_json_data):
     num_sessions = 0
     stakes_seen = set()
 
+    curr_total = 0
+    profit_per_session = []
     print("Parsing json data")
     for session in (raw_json_data["sessions"]):
 
@@ -183,6 +189,9 @@ def create_summary_by_stakes(stakes, raw_json_data):
             num_sessions += 1
             stakes_seen.add(session["game"]["stakes"])
 
+            curr_total += session["game"]["profit"]
+            profit_per_session.append(curr_total)
+
   
     #Alters to array data structure
     stakes_arr = []
@@ -194,12 +203,26 @@ def create_summary_by_stakes(stakes, raw_json_data):
     print(f"hours: {hours}")
     print(f"total_in: {total_in}")
     print(f"total_out: {total_out}")
+    print(f"profit_per_session: {profit_per_session}")
 
-    return Summary(hours, total_in, total_out, stakes_arr, num_sessions)
+    return Summary(hours, total_in, total_out, stakes_arr, num_sessions, profit_per_session)
 
-#TODO: Add profit/sessions method that formulates data to allow for easy graphing.
+
+
+def formulate_graph_data(json_data, stakes):
+    session_data = json_data["sessions"]
+
+    progression_arr = []
+    curr_total = 0
+    for session in session_data:
+        if(session["game"]["stakes"] == stakes or stakes == "ALL"):
+            curr_total += session["game"]["profit"]
+            progression_arr.append(curr_total)
+        
+    return progression_arr
 
 if __name__ == "__main__":
     raw_json_data = load_data()
+    # print(formulate_graph_data(raw_json_data, "1/3"))
     write_all_stakes_summary(raw_json_data)
     write_overall_summary_json(raw_json_data)
