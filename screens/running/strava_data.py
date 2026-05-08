@@ -9,9 +9,27 @@ load_dotenv()
 
 STRAVA_CLIENT_ID = os.getenv("STRAVA_CLIENT_ID")
 STRAVA_CLIENT_SECRET = os.getenv("STRAVA_CLIENT_SECRET")
-STRAVA_CLIENT_ACCESS_TOKEN = os.getenv("STRAVA_CLIENT_ACCESS_TOKEN")
 STRAVA_REFRESH_TOKEN = os.getenv("STRAVA_REFRESH_TOKEN")
 
+def read_access_key():
+    file_reader = open("keys_file.txt", 'r')
+    access_token = file_reader.read()
+    print("[read_access_key] Reading access key from /keys_file.txt")
+
+
+    file_reader.close()
+    
+    return access_token
+
+STRAVA_CLIENT_ACCESS_TOKEN = read_access_key()
+
+def write_access_key(new_access_key):
+    file_writer = open("keys_file.txt", 'w')
+
+    file_writer.write(new_access_key)
+    print("[write_access_key] Writing new access key to /keys_file.txt")
+
+    file_writer.close()
 
 
 def read_expiration():
@@ -61,6 +79,7 @@ def get_new_token(key_json):
     else:
         if(data["access_token"]):
             STRAVA_CLIENT_ACCESS_TOKEN = data["access_token"]
+            write_access_key(data["access_token"])
             print("[get_new_token] Access token changed")
         else:
             print("[get_new_token] Invalid request, access token not found")
