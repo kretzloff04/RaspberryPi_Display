@@ -89,3 +89,12 @@ https://github.com/pseudo-r/Public-ESPN-API?tab=readme-ov-file
 
 Weather API:
 https://openweathermap.org/api
+
+<br>
+
+## Prioritized List of Goals
+1. Implement backend for all screens (running, transit, weather, etc)
+2. Implement screens to relay data on matrix display
+3. Handle edge cases (internet down, turn off / default during the night, basic screen based on preset schedule to avoid unnecessary API requests / data aggregation)
+4. Design a web/mobile-based user interface to adjust how screens are displayed (current screen, adjust order in which they are displayed, etc
+)
