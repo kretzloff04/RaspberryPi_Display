@@ -104,7 +104,8 @@ def overall_running_stats(athlete_data):
 def overall_biking_stats(athlete_data):
     return athlete_data["all_ride_totals"]
 
-
+    
+#TODO Figure out why getting read permission error
 def recent_activities():
     headers = {'Authorization': f"Bearer {STRAVA_CLIENT_ACCESS_TOKEN}"}
     url = f"https://www.strava.com/api/v3/athlete/activities"
@@ -119,4 +120,6 @@ data = get_key_json_data()
 get_new_token(data)
 
 # get_overall_stats()
+
+#TODO Figure out why getting read permission error
 recent_activities()
