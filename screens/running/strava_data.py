@@ -11,6 +11,8 @@ STRAVA_CLIENT_ID = os.getenv("STRAVA_CLIENT_ID")
 STRAVA_CLIENT_SECRET = os.getenv("STRAVA_CLIENT_SECRET")
 STRAVA_REFRESH_TOKEN = os.getenv("STRAVA_REFRESH_TOKEN")
 
+ATHLETE_ID = 186483013
+
 def read_access_key():
     file_reader = open("keys_file.txt", 'r')
     access_token = file_reader.read()
@@ -85,5 +87,36 @@ def get_new_token(key_json):
             print("[get_new_token] Invalid request, access token not found")
 
 
+
+def athlete_api_req():
+    headers = {'Authorization': f"Bearer {STRAVA_CLIENT_ACCESS_TOKEN}"}
+    url = f"https://www.strava.com/api/v3/athletes/{ATHLETE_ID}/stats"
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    return data
+
+def overall_running_stats(athlete_data):
+    return athlete_data["all_run_totals"]
+
+
+def overall_biking_stats(athlete_data):
+    return athlete_data["all_ride_totals"]
+
+
+def recent_activities():
+    headers = {'Authorization': f"Bearer {STRAVA_CLIENT_ACCESS_TOKEN}"}
+    url = f"https://www.strava.com/api/v3/athlete/activities"
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    print(data)
+
+
 data = get_key_json_data()
 get_new_token(data)
+
+# get_overall_stats()
+recent_activities()
