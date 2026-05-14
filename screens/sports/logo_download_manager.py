@@ -18,6 +18,8 @@ def get_api_req(sport):
         url = "https://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/teams"
     elif(sport == "cfb"):
         url = "https://sports.core.api.espn.com/v2/sports/football/leagues/college-football/teams"
+    elif(sport == "mlb"):
+        url = "https://sports.core.api.espn.com/v2/sports/baseball/leagues/mlb/teams"
     return url
 
 
@@ -97,4 +99,4 @@ def download_logos(sport):
         teams = req["items"]
         
         
-download_logos("cfb")
+download_logos("mlb")
