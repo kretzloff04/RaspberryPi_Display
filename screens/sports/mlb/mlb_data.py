@@ -58,5 +58,6 @@ def create_game(data):
     print("No cubs game today, Game object not created")
     return None
 
-def 
+def update_runs(data):
+    game_data = data["events"][]
 

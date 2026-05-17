@@ -4,6 +4,7 @@ screens/poker/raw_poker_data.json
 screens/poker/poker_summary.json
 screens/poker/poker_summary_test.json
 
-screens/running/keys_file.txt
+screens/strava/keys_file.txt
+screens/strava/key_expiration.txt
 
 screens/sports/test.json
